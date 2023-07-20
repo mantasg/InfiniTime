@@ -9,6 +9,10 @@ using namespace Pinetime::Applications::Screens;
 BatteryIcon::BatteryIcon(bool colorOnLowBattery) : colorOnLowBattery {colorOnLowBattery} {};
 
 void BatteryIcon::Create(lv_obj_t* parent) {
+  batteryText = lv_label_create(parent, nullptr);
+  lv_obj_set_style_local_text_color(batteryText, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x999999));
+  lv_label_set_text_static(batteryText, "");
+
   batteryImg = lv_img_create(parent, nullptr);
   lv_img_set_src(batteryImg, &batteryicon);
   lv_obj_set_style_local_image_recolor(batteryImg, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
@@ -24,6 +28,8 @@ lv_obj_t* BatteryIcon::GetObject() {
 }
 
 void BatteryIcon::SetBatteryPercentage(uint8_t percentage) {
+  lv_label_set_text_fmt(batteryText, "%d%%", (int) percentage);
+
   lv_obj_set_height(batteryJuice, percentage * 14 / 100);
   lv_obj_realign(batteryJuice);
   if (colorOnLowBattery) {

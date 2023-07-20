@@ -20,6 +20,7 @@ namespace Pinetime {
       private:
         lv_obj_t* batteryImg;
         lv_obj_t* batteryJuice;
+        lv_obj_t* batteryText;
         bool colorOnLowBattery = false;
       };
     }
