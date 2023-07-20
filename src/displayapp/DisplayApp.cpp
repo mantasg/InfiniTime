@@ -199,6 +199,7 @@ void DisplayApp::Refresh() {
           DimScreen();
         }
         if (IsPastSleepTime()) {
+          // Comment this out to keep simulator awake, but there should be a better way
           systemTask->PushMessage(System::Messages::GoToSleep);
           state = States::Idle;
         }
