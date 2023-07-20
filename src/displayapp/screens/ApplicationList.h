@@ -49,10 +49,10 @@ namespace Pinetime {
 
           {Symbols::paintbrush, Apps::Paint},
           {Symbols::paddle, Apps::Paddle},
-          {"2", Apps::Twos},
-          {Symbols::drum, Apps::Metronome},
-          {Symbols::map, Apps::Navigation},
-          {Symbols::none, Apps::None},
+          //{"2", Apps::Twos},
+          //{Symbols::drum, Apps::Metronome},
+          //{Symbols::map, Apps::Navigation},
+          //{Symbols::none, Apps::None},
 
           // {"M", Apps::Motion},
         }};
