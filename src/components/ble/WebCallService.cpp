@@ -80,7 +80,8 @@ int WebCallService::MakeWebCall() {
 }
 
 std::string WebCallService::getResponse() const {
-  return response;
+   return "One\nTwo\nThree\nFour\nFive\nSix\nSeven\nEight\nNine\nTen\nEleven\nTwelve\nThirteen\nVery long item here that certainly exceeds 20 chars";
+  //return response;
 }
 
 bool WebCallService::getResponseReceived() const {
