@@ -29,7 +29,6 @@ namespace Pinetime {
               Controllers::Settings& settingsController,
               Controllers::HeartRateController& heartRateController,
               Controllers::MotionController& motionController,
-              Controllers::WeatherService& weatherService,
               Controllers::FS& filesystem);
         ~Clock() override;
 
@@ -44,16 +43,10 @@ namespace Pinetime {
         Controllers::Settings& settingsController;
         Controllers::HeartRateController& heartRateController;
         Controllers::MotionController& motionController;
-        Controllers::WeatherService& weatherService;
         Controllers::FS& filesystem;
 
         std::unique_ptr<Screen> screen;
         std::unique_ptr<Screen> WatchFaceDigitalScreen();
-        std::unique_ptr<Screen> WatchFaceAnalogScreen();
-        std::unique_ptr<Screen> WatchFacePineTimeStyleScreen();
-        std::unique_ptr<Screen> WatchFaceTerminalScreen();
-        std::unique_ptr<Screen> WatchFaceInfineatScreen();
-        std::unique_ptr<Screen> WatchFaceCasioStyleG7710();
       };
     }
   }

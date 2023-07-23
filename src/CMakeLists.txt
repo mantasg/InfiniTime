@@ -375,8 +375,6 @@ list(APPEND SOURCE_FILES
         displayapp/screens/Screen.cpp
         displayapp/screens/Clock.cpp
         displayapp/screens/Tile.cpp
-        displayapp/screens/InfiniPaint.cpp
-        displayapp/screens/Paddle.cpp
         displayapp/screens/StopWatch.cpp
         displayapp/screens/BatteryIcon.cpp
         displayapp/screens/BleIcon.cpp
@@ -385,16 +383,10 @@ list(APPEND SOURCE_FILES
         displayapp/screens/Label.cpp
         displayapp/screens/FirmwareUpdate.cpp
         displayapp/screens/Music.cpp
-        displayapp/screens/Weather.cpp
-        displayapp/screens/Navigation.cpp
-        displayapp/screens/Metronome.cpp
-        displayapp/screens/Motion.cpp
         displayapp/screens/FirmwareValidation.cpp
         displayapp/screens/ApplicationList.cpp
         displayapp/screens/Notifications.cpp
-        displayapp/screens/Twos.cpp
         displayapp/screens/HeartRate.cpp
-        displayapp/screens/Motion.cpp
         displayapp/screens/FlashLight.cpp
         displayapp/screens/List.cpp
         displayapp/screens/CheckboxList.cpp
@@ -429,12 +421,7 @@ list(APPEND SOURCE_FILES
 
         ## Watch faces
         displayapp/icons/bg_clock.c
-        displayapp/screens/WatchFaceAnalog.cpp
         displayapp/screens/WatchFaceDigital.cpp
-        displayapp/screens/WatchFaceInfineat.cpp
-        displayapp/screens/WatchFaceTerminal.cpp
-        displayapp/screens/WatchFacePineTimeStyle.cpp
-        displayapp/screens/WatchFaceCasioStyleG7710.cpp
 
         ##
 
@@ -463,8 +450,6 @@ list(APPEND SOURCE_FILES
         components/ble/CurrentTimeService.cpp
         components/ble/AlertNotificationService.cpp
         components/ble/MusicService.cpp
-        components/ble/weather/WeatherService.cpp
-        components/ble/NavigationService.cpp
         components/ble/BatteryInformationService.cpp
         components/ble/WebCallService.cpp
         components/ble/FSService.cpp
@@ -531,13 +516,11 @@ list(APPEND RECOVERY_SOURCE_FILES
         components/ble/CurrentTimeService.cpp
         components/ble/AlertNotificationService.cpp
         components/ble/MusicService.cpp
-        components/ble/weather/WeatherService.cpp
         components/ble/BatteryInformationService.cpp
         components/ble/WebCallService.cpp
         components/ble/FSService.cpp
         components/ble/ImmediateAlertService.cpp
         components/ble/ServiceDiscovery.cpp
-        components/ble/NavigationService.cpp
         components/ble/HeartRateService.cpp
         components/ble/MotionService.cpp
         components/firmwarevalidator/FirmwareValidator.cpp
@@ -600,9 +583,7 @@ set(INCLUDE_FILES
         displayapp/screens/Screen.h
         displayapp/screens/Clock.h
         displayapp/screens/Tile.h
-        displayapp/screens/InfiniPaint.h
         displayapp/screens/StopWatch.h
-        displayapp/screens/Paddle.h
         displayapp/screens/BatteryIcon.h
         displayapp/screens/BleIcon.h
         displayapp/screens/NotificationIcon.h
@@ -617,8 +598,6 @@ set(INCLUDE_FILES
         displayapp/WatchFaces.h
         displayapp/screens/Notifications.h
         displayapp/screens/HeartRate.h
-        displayapp/screens/Metronome.h
-        displayapp/screens/Motion.h
         displayapp/screens/Timer.h
         displayapp/screens/Alarm.h
         displayapp/Colors.h
@@ -660,7 +639,6 @@ set(INCLUDE_FILES
         components/ble/BleClient.h
         components/ble/HeartRateService.h
         components/ble/MotionService.h
-        components/ble/weather/WeatherService.h
         components/settings/Settings.h
         components/timer/Timer.h
         components/alarm/AlarmController.h
