@@ -76,14 +76,21 @@ void WebCall::Refresh() {
         const std::string response = webCallService.getResponse();
         webCallService.reset();
 
-        std::string str;
-        std::stringstream strStream(response);
         int counter = 0;
-        while (getline(strStream, str, '\n')) {
+
+        std::string del = "\n";
+        int start = 0;
+        int end = -1*del.size();
+        do {
             if (counter == maxItems) break;
-            values[counter++] = str.length() > maxItemLength ? str.substr(0, maxItemLength) : str;            
-        }
-        
+            
+            start = end + del.size();
+            end = response.find(del, start);
+            std::string item = response.substr(start, end - start);
+            values[counter++] = item.length() > maxItemLength ? item.substr(0, maxItemLength) : item;
+            
+        } while (end != -1);
+
         currentPage = 0;
         itemCount = counter;
         pageCount = itemCount == 0 ? 0 : ceil((float) itemCount / (float) itemsPerPage); 
