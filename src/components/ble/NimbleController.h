@@ -10,6 +10,7 @@
 #include "components/ble/AlertNotificationClient.h"
 #include "components/ble/AlertNotificationService.h"
 #include "components/ble/BatteryInformationService.h"
+#include "components/ble/WebCallService.h"
 #include "components/ble/CurrentTimeClient.h"
 #include "components/ble/CurrentTimeService.h"
 #include "components/ble/DeviceInformationService.h"
@@ -59,6 +60,10 @@ namespace Pinetime {
         return musicService;
       };
 
+      Pinetime::Controllers::WebCallService& webCall() {
+        return webCallService;
+      };
+      
       Pinetime::Controllers::NavigationService& navigation() {
         return navService;
       };
@@ -102,6 +107,7 @@ namespace Pinetime {
       WeatherService weatherService;
       NavigationService navService;
       BatteryInformationService batteryInformationService;
+      WebCallService webCallService;
       ImmediateAlertService immediateAlertService;
       HeartRateService heartRateService;
       MotionService motionService;
