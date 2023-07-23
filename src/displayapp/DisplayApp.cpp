@@ -26,6 +26,7 @@
 #include "displayapp/screens/Twos.h"
 #include "displayapp/screens/FlashLight.h"
 #include "displayapp/screens/BatteryInfo.h"
+#include "displayapp/screens/WebCall.h"
 #include "displayapp/screens/Steps.h"
 #include "displayapp/screens/PassKey.h"
 #include "displayapp/screens/Error.h"
@@ -528,6 +529,9 @@ void DisplayApp::LoadScreen(Apps app, DisplayApp::FullRefreshDirections directio
       break;
     case Apps::Paddle:
       currentScreen = std::make_unique<Screens::Paddle>(lvgl);
+      break;
+    case Apps::WebCall:
+      currentScreen = std::make_unique<Screens::WebCall>(systemTask->nimble().webCall());
       break;
     case Apps::Music:
       currentScreen = std::make_unique<Screens::Music>(systemTask->nimble().music());
