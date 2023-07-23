@@ -25,6 +25,7 @@ namespace Pinetime {
       int Callback(struct ble_gatt_access_ctxt* ctxt);
       std::string getResponse() const;
       bool getResponseReceived() const;
+      void reset();
       
     private:
       Pinetime::Controllers::NimbleController& nimble;

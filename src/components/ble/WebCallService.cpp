@@ -86,3 +86,7 @@ std::string WebCallService::getResponse() const {
 bool WebCallService::getResponseReceived() const {
     return responseReceived;
 }
+
+void WebCallService::reset() {
+    responseReceived = false;
+}

@@ -27,13 +27,13 @@ namespace Pinetime {
     
             lv_task_t* taskRefresh;
             
-            uint8_t maxItems = 21;
+            uint8_t maxItems = 45;
             uint8_t maxItemLength = 20;
-            uint8_t itemsPerPage = 7;
+            uint8_t itemsPerPage = 9;
             uint8_t pageCount = 0;
             uint8_t currentPage = 0;
             uint8_t itemCount = 0;
-            std::string values[21] {};
+            std::string values[45] {};
             
 /*            uint8_t itemsPerPage = 7;
             uint8_t pageCount = 3;
