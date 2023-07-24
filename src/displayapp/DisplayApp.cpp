@@ -358,6 +358,12 @@ void DisplayApp::Refresh() {
         RestoreBrightness();
         motorController.RunForDuration(15);
         break;
+      case Messages::GoToWatchface:
+        if (currentApp != Apps::Clock) {
+          returnAppStack.Pop();  
+          LoadNewScreen(Apps::Clock, DisplayApp::FullRefreshDirections::None);
+        }
+        break;
     }
   }
 
@@ -510,7 +516,7 @@ void DisplayApp::LoadScreen(Apps app, DisplayApp::FullRefreshDirections directio
       currentScreen = std::make_unique<Screens::StopWatch>(*systemTask);
       break;
     case Apps::WebCall:
-      currentScreen = std::make_unique<Screens::WebCall>(systemTask->nimble().webCall());
+      currentScreen = std::make_unique<Screens::WebCall>(systemTask->nimble().webCall(), *systemTask);
       break;
     case Apps::Music:
       currentScreen = std::make_unique<Screens::Music>(systemTask->nimble().music());

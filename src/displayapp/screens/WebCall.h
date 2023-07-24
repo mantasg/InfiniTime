@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <string>
 #include "displayapp/screens/Screen.h"
+#include "systemtask/SystemTask.h"
 #include <lvgl/lvgl.h>
 
 namespace Pinetime {
@@ -13,7 +14,7 @@ namespace Pinetime {
     namespace Applications::Screens {
         class WebCall : public Screen {
         public:
-            WebCall(Pinetime::Controllers::WebCallService& webCallService);
+            WebCall(Pinetime::Controllers::WebCallService& webCallService, System::SystemTask& systemTask);
             ~WebCall() override;
             
             void Refresh() override;
@@ -21,6 +22,7 @@ namespace Pinetime {
             bool OnTouchEvent(TouchEvents event) override;
         private:
             Pinetime::Controllers::WebCallService& webCallService;
+            System::SystemTask& systemTask;
     
             lv_obj_t* content_label;
             lv_obj_t* page_label;

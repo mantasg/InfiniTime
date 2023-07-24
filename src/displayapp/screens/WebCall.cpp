@@ -14,7 +14,9 @@ namespace {
   }
 }
 
-WebCall::WebCall(Pinetime::Controllers::WebCallService& webCallService) : webCallService {webCallService} {
+WebCall::WebCall(Pinetime::Controllers::WebCallService& webCallService, System::SystemTask& systemTask) 
+: webCallService {webCallService}, 
+  systemTask{systemTask}  {
     lv_obj_t* act = lv_scr_act();
     act->user_data = this;
     lv_obj_set_event_cb(act, btnStartStopEventHandler);
@@ -123,6 +125,9 @@ bool WebCall::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
             currentPage--;
             DrawItems();
         }
+    }
+    else if (event == TouchEvents::SwipeDown) {
+        systemTask.PushMessage(System::Messages::GoToWatchface);
     }
     else if (event == TouchEvents::LongTap) {
         MakeWebCall();

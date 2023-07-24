@@ -382,6 +382,9 @@ void SystemTask::Work() {
             nimbleController.DisableRadio();
           }
           break;
+        case Messages::GoToWatchface:
+          displayApp.PushMessage(Pinetime::Applications::Display::Messages::GoToWatchface);
+          break;  
         default:
           break;
       }

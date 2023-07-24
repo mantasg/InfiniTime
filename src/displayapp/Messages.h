@@ -24,6 +24,7 @@ namespace Pinetime {
         Chime,
         BleRadioEnableToggle,
         OnChargingEvent,
+        GoToWatchface,
       };
     }
   }
