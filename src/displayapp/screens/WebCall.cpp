@@ -77,18 +77,30 @@ void WebCall::Refresh() {
         webCallService.reset();
 
         int counter = 0;
-
-        std::string del = "\n";
+        const std::string del = "\n";
         int start = 0;
-        int end = -1*del.size();
+        int end = -1 * del.size();
         do {
             if (counter == maxItems) break;
             
             start = end + del.size();
             end = response.find(del, start);
             std::string item = response.substr(start, end - start);
-            values[counter++] = item.length() > maxItemLength ? item.substr(0, maxItemLength) : item;
+            if (item.length() > maxItemLength) item = item.substr(0, maxItemLength);
             
+            if (item.rfind("[W]") == 0) {
+                char buffer[item.length() + 9];
+                snprintf(buffer, sizeof(buffer), "#FFFF00 %s", item.c_str());
+                item = buffer;
+            }
+
+            if (item.rfind("[C]") == 0) {
+                char buffer[item.length() + 9];
+                snprintf(buffer, sizeof(buffer), "#FF0000 %s", item.c_str());
+                item = buffer;
+            }
+            
+            values[counter++] = item;
         } while (end != -1);
 
         currentPage = 0;
@@ -101,14 +113,14 @@ void WebCall::Refresh() {
 
 bool WebCall::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
     if (event == TouchEvents::SwipeLeft) {
-        if (currentPage > 0) {
-            currentPage--;
+        if (currentPage < pageCount - 1) {
+            currentPage++;
             DrawItems();
         }
     } 
     else if (event == TouchEvents::SwipeRight) {
-        if (currentPage < pageCount - 1) {
-            currentPage++;
+        if (currentPage > 0) {
+            currentPage--;
             DrawItems();
         }
     }

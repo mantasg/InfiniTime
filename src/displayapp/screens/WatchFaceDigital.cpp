@@ -10,6 +10,7 @@
 #include "components/heartrate/HeartRateController.h"
 #include "components/motion/MotionController.h"
 #include "components/settings/Settings.h"
+#include "displayapp/InfiniTimeTheme.h"
 
 using namespace Pinetime::Applications::Screens;
 
@@ -36,13 +37,13 @@ WatchFaceDigital::WatchFaceDigital(Controllers::DateTime& dateTimeController,
   lv_obj_align(notificationIcon, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 0);
 
   label_date = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_CENTER, 0, 60);
+  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 110);
   lv_obj_set_style_local_text_color(label_date, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x999999));
 
   label_time = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_set_style_local_text_font(label_time, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_extrabold_compressed);
 
-  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_RIGHT_MID, 0, 0);
+  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 40);
 
   label_time_ampm = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text_static(label_time_ampm, "");
@@ -67,7 +68,40 @@ WatchFaceDigital::WatchFaceDigital(Controllers::DateTime& dateTimeController,
   lv_obj_set_style_local_text_color(stepIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x00FFE7));
   lv_label_set_text_static(stepIcon, Symbols::shoe);
   lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, -5, 0);
+  
+  // Nagios status
+  
+  lv_obj_t*  nagios_status_btn = lv_btn_create(lv_scr_act(), nullptr);
+  lv_obj_set_height(nagios_status_btn, 30);
+  lv_obj_set_width(nagios_status_btn, 240);
+  lv_obj_align(nagios_status_btn, nullptr, LV_ALIGN_IN_TOP_MID, 0, 145);
+  lv_obj_set_style_local_bg_color(nagios_status_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, Colors::green);
+  
+  lv_obj_t* label_nagios_status_text = lv_label_create(nagios_status_btn, nullptr);
+  lv_label_set_text_static(label_nagios_status_text, "O: 1000 W: 10 C: 20");
 
+  // On call primary
+
+  lv_obj_t*  on_call_primary_btn = lv_btn_create(lv_scr_act(), nullptr);
+  lv_obj_set_width(on_call_primary_btn, 118);
+  lv_obj_align(on_call_primary_btn, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 180);
+  lv_obj_set_style_local_bg_color(on_call_primary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFFFF));
+
+  lv_obj_t* on_call_primary_text = lv_label_create(on_call_primary_btn, nullptr);
+  lv_label_set_text_static(on_call_primary_text, "MG/MG");
+  lv_obj_set_style_local_text_color(on_call_primary_text, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x000000));
+  
+  // On call secondary
+  
+  lv_obj_t*  on_call_secondary_btn = lv_btn_create(lv_scr_act(), nullptr);
+  lv_obj_set_width(on_call_secondary_btn, 118);
+  lv_obj_align(on_call_secondary_btn, nullptr, LV_ALIGN_IN_TOP_RIGHT, 0, 180);
+  lv_obj_set_style_local_bg_color(on_call_secondary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFFFF));
+
+  lv_obj_t* on_call_secondary_text = lv_label_create(on_call_secondary_btn, nullptr);
+  lv_label_set_text_static(on_call_secondary_text, "MG/MG");
+  lv_obj_set_style_local_text_color(on_call_secondary_text, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x000000));      
+  
   taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
   Refresh();
 }
@@ -107,7 +141,7 @@ void WatchFaceDigital::Refresh() {
       lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_RIGHT_MID, 0, 0);
     } else {
       lv_label_set_text_fmt(label_time, "%02d:%02d", hour, minute);
-      lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+      lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 40);
     }
 
     currentDate = std::chrono::time_point_cast<days>(currentDateTime.Get());
