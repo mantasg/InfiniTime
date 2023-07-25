@@ -31,10 +31,13 @@ namespace Pinetime {
                          Controllers::NotificationManager& notificationManager,
                          Controllers::Settings& settingsController,
                          Controllers::HeartRateController& heartRateController,
-                         Controllers::MotionController& motionController);
+                         Controllers::MotionController& motionController,
+                         DisplayApp* displayApp);
         ~WatchFaceDigital() override;
 
         void Refresh() override;
+
+        DisplayApp* displayApp;
 
       private:
         uint8_t displayedHour = -1;

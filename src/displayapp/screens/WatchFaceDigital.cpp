@@ -14,20 +14,30 @@
 
 using namespace Pinetime::Applications::Screens;
 
+void btnHandler(lv_obj_t* obj, lv_event_t event) {
+    if (event == LV_EVENT_LONG_PRESSED) {
+        // TODO: might need some more conditions here
+        auto* screen = static_cast<WatchFaceDigital*>(obj->user_data);
+        screen->displayApp->PushMessage(Pinetime::Applications::Display::Messages::OpenNagios);
+    }
+}
+
 WatchFaceDigital::WatchFaceDigital(Controllers::DateTime& dateTimeController,
                                    const Controllers::Battery& batteryController,
                                    const Controllers::Ble& bleController,
                                    Controllers::NotificationManager& notificationManager,
                                    Controllers::Settings& settingsController,
                                    Controllers::HeartRateController& heartRateController,
-                                   Controllers::MotionController& motionController)
+                                   Controllers::MotionController& motionController,
+                                   DisplayApp* displayApp)
   : currentDateTime {{}},
     dateTimeController {dateTimeController},
     notificationManager {notificationManager},
     settingsController {settingsController},
     heartRateController {heartRateController},
     motionController {motionController},
-    statusIcons(batteryController, bleController) {
+    statusIcons(batteryController, bleController),
+    displayApp{displayApp} {
 
   statusIcons.Create();
 
@@ -76,6 +86,8 @@ WatchFaceDigital::WatchFaceDigital(Controllers::DateTime& dateTimeController,
   lv_obj_set_width(nagios_status_btn, 240);
   lv_obj_align(nagios_status_btn, nullptr, LV_ALIGN_IN_TOP_MID, 0, 140);
   lv_obj_set_style_local_bg_color(nagios_status_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, Colors::green);
+  nagios_status_btn->user_data = this;
+  lv_obj_set_event_cb(nagios_status_btn, btnHandler);
   
   lv_obj_t* label_nagios_status_text = lv_label_create(nagios_status_btn, nullptr);
   lv_obj_set_style_local_text_font(label_nagios_status_text, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
@@ -87,7 +99,9 @@ WatchFaceDigital::WatchFaceDigital(Controllers::DateTime& dateTimeController,
   lv_obj_set_width(on_call_primary_btn, 118);
   lv_obj_align(on_call_primary_btn, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 175);
   lv_obj_set_style_local_bg_color(on_call_primary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFFFF));
-
+  on_call_primary_btn->user_data = this;
+  lv_obj_set_event_cb(on_call_primary_btn, btnHandler);
+  
   lv_obj_t* on_call_primary_text = lv_label_create(on_call_primary_btn, nullptr);
   lv_label_set_text_static(on_call_primary_text, "MG/MG");
   lv_obj_set_style_local_text_color(on_call_primary_text, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x000000));
@@ -97,8 +111,10 @@ WatchFaceDigital::WatchFaceDigital(Controllers::DateTime& dateTimeController,
   lv_obj_t*  on_call_secondary_btn = lv_btn_create(lv_scr_act(), nullptr);
   lv_obj_set_width(on_call_secondary_btn, 118);
   lv_obj_align(on_call_secondary_btn, nullptr, LV_ALIGN_IN_TOP_RIGHT, 0, 175);
-  lv_obj_set_style_local_bg_color(on_call_secondary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFFFF));
-
+  lv_obj_set_style_local_bg_color(on_call_secondary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x505050));
+  on_call_secondary_btn->user_data = this;
+  lv_obj_set_event_cb(on_call_secondary_btn, btnHandler);
+  
   lv_obj_t* on_call_secondary_text = lv_label_create(on_call_secondary_btn, nullptr);
   lv_label_set_text_static(on_call_secondary_text, "MG/MG");
   lv_obj_set_style_local_text_color(on_call_secondary_text, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x000000));      

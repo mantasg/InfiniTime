@@ -364,6 +364,9 @@ void DisplayApp::Refresh() {
           LoadNewScreen(Apps::Clock, DisplayApp::FullRefreshDirections::None);
         }
         break;
+      case Messages::OpenNagios:
+        LoadNewScreen(Apps::WebCall, DisplayApp::FullRefreshDirections::None);
+        break;
     }
   }
 
@@ -415,7 +418,8 @@ void DisplayApp::LoadScreen(Apps app, DisplayApp::FullRefreshDirections directio
                                                        settingsController,
                                                        heartRateController,
                                                        motionController,
-                                                       filesystem);
+                                                       filesystem, 
+                                                       this);
       break;
 
     case Apps::Error:

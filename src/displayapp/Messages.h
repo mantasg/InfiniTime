@@ -25,6 +25,7 @@ namespace Pinetime {
         BleRadioEnableToggle,
         OnChargingEvent,
         GoToWatchface,
+        OpenNagios,
       };
     }
   }

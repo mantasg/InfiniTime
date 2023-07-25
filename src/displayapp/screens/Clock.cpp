@@ -19,7 +19,8 @@ Clock::Clock(Controllers::DateTime& dateTimeController,
              Controllers::Settings& settingsController,
              Controllers::HeartRateController& heartRateController,
              Controllers::MotionController& motionController,
-             Controllers::FS& filesystem)
+             Controllers::FS& filesystem,
+             DisplayApp* displayApp)
   : dateTimeController {dateTimeController},
     batteryController {batteryController},
     bleController {bleController},
@@ -28,6 +29,7 @@ Clock::Clock(Controllers::DateTime& dateTimeController,
     heartRateController {heartRateController},
     motionController {motionController},
     filesystem {filesystem},
+    displayApp {displayApp},
     screen {[this, &settingsController]() {
       switch (settingsController.GetWatchFace()) {
         case WatchFace::Digital:
@@ -58,5 +60,6 @@ std::unique_ptr<Screen> Clock::WatchFaceDigitalScreen() {
                                                      notificationManager,
                                                      settingsController,
                                                      heartRateController,
-                                                     motionController);
+                                                     motionController,
+                                                     displayApp);
 }
