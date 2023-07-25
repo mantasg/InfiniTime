@@ -419,7 +419,8 @@ void DisplayApp::LoadScreen(Apps app, DisplayApp::FullRefreshDirections directio
                                                        heartRateController,
                                                        motionController,
                                                        filesystem, 
-                                                       this);
+                                                       this,
+                                                       systemTask->nimble().webCall());
       break;
 
     case Apps::Error:

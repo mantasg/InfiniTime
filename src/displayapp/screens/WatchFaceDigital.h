@@ -32,12 +32,14 @@ namespace Pinetime {
                          Controllers::Settings& settingsController,
                          Controllers::HeartRateController& heartRateController,
                          Controllers::MotionController& motionController,
-                         DisplayApp* displayApp);
+                         DisplayApp* displayApp,
+                         Pinetime::Controllers::WebCallService& webCallService);
         ~WatchFaceDigital() override;
 
         void Refresh() override;
 
         DisplayApp* displayApp;
+        Pinetime::Controllers::WebCallService& webCallService;
 
       private:
         uint8_t displayedHour = -1;
@@ -63,6 +65,13 @@ namespace Pinetime {
         lv_obj_t* stepIcon;
         lv_obj_t* stepValue;
         lv_obj_t* notificationIcon;
+
+        lv_obj_t* nagios_status_btn;
+        lv_obj_t* label_nagios_status_text;
+        lv_obj_t* on_call_primary_btn;
+        lv_obj_t* on_call_primary_text;
+        lv_obj_t* on_call_secondary_btn;
+        lv_obj_t* on_call_secondary_text;
 
         Controllers::DateTime& dateTimeController;
         Controllers::NotificationManager& notificationManager;
