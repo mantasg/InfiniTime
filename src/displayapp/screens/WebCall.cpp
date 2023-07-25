@@ -88,17 +88,17 @@ void WebCall::Refresh() {
             start = end + del.size();
             end = response.find(del, start);
             std::string item = response.substr(start, end - start);
-            if (item.length() > maxItemLength) item = item.substr(0, maxItemLength);
+            if (item.length() > maxItemLength + 4) item = item.substr(0, maxItemLength + 4);
             
             if (item.rfind("[W]") == 0) {
                 char buffer[item.length() + 9];
-                snprintf(buffer, sizeof(buffer), "#FFFF00 %s", item.c_str());
+                snprintf(buffer, sizeof(buffer), "#FFFF00 %s", item.substr(4, item.length() - 4).c_str());
                 item = buffer;
             }
 
             if (item.rfind("[C]") == 0) {
                 char buffer[item.length() + 9];
-                snprintf(buffer, sizeof(buffer), "#FF0000 %s", item.c_str());
+                snprintf(buffer, sizeof(buffer), "#FFFF00 %s", item.substr(4, item.length() - 4).c_str());
                 item = buffer;
             }
             
