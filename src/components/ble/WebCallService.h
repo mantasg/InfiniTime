@@ -21,7 +21,7 @@ namespace Pinetime {
     public:
       WebCallService(Pinetime::Controllers::NimbleController& nimble);
       void Init();
-      int MakeWebCall();
+      int MakeWebCall(std::string label);
       int Callback(struct ble_gatt_access_ctxt* ctxt);
       std::string getResponse() const;
       bool getResponseReceived() const;

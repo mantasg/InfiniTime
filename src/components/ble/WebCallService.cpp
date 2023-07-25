@@ -64,16 +64,15 @@ int WebCallService::Callback(struct ble_gatt_access_ctxt* ctxt) {
   return 0;
 }
 
-int WebCallService::MakeWebCall() {
+int WebCallService::MakeWebCall(std::string label) {
   responseReceived = false;
     
   uint16_t connectionHandle = nimble.connHandle();
   if (connectionHandle == 0 || connectionHandle == BLE_HS_CONN_HANDLE_NONE)  return 1;
-
-  std::string str = "hello";
-  unsigned char bytes[str.length()];
-  std::copy(str.begin(), str.end(), bytes);
-  auto* om = ble_hs_mbuf_from_flat(&bytes, 5);
+  
+  unsigned char bytes[label.length()];
+  std::copy(label.begin(), label.end(), bytes);
+  auto* om = ble_hs_mbuf_from_flat(&bytes, label.length());
   ble_gattc_notify_custom(connectionHandle, eventHandle, om);
   
   return 0;

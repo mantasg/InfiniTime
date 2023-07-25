@@ -46,7 +46,7 @@ void WebCall::OnButtonEvent(lv_obj_t* obj, lv_event_t event) {}
 
 void WebCall::MakeWebCall() {
     lv_label_set_text_static(content_label, "Requesting data ...");
-    int const result = webCallService.MakeWebCall();
+    int const result = webCallService.MakeWebCall("nagios_list");
     if (result > 0) {
         lv_label_set_text_static(content_label, "Web call failed");
     }
