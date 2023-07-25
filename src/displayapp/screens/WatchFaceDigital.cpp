@@ -201,6 +201,10 @@ void WatchFaceDigital::Refresh() {
     uint8_t hour = dateTimeController.Hours();
     uint8_t minute = dateTimeController.Minutes();
 
+    if (minute == 0 || minute % 5 == 0) {
+      webCallService.MakeWebCall("nagios_status");
+    }
+    
     // Modifiy to fiddle with time position
     if (settingsController.GetClockType() == Controllers::Settings::ClockType::H12) {
       char ampmChar[3] = "AM";
