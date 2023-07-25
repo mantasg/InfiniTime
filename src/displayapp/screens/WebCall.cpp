@@ -45,7 +45,7 @@ WebCall::~WebCall() {
 void WebCall::OnButtonEvent(lv_obj_t* obj, lv_event_t event) {}
 
 void WebCall::MakeWebCall() {
-    lv_label_set_text_static(content_label, "Making web call");
+    lv_label_set_text_static(content_label, "Requesting data ...");
     int const result = webCallService.MakeWebCall();
     if (result > 0) {
         lv_label_set_text_static(content_label, "Web call failed");
@@ -88,20 +88,6 @@ void WebCall::Refresh() {
             start = end + del.size();
             end = response.find(del, start);
             std::string item = response.substr(start, end - start);
-            if (item.length() > maxItemLength + 4) item = item.substr(0, maxItemLength + 4);
-            
-            if (item.rfind("[W]") == 0) {
-                char buffer[item.length() + 9];
-                snprintf(buffer, sizeof(buffer), "#FFFF00 %s", item.substr(4, item.length() - 4).c_str());
-                item = buffer;
-            }
-
-            if (item.rfind("[C]") == 0) {
-                char buffer[item.length() + 9];
-                snprintf(buffer, sizeof(buffer), "#FFFF00 %s", item.substr(4, item.length() - 4).c_str());
-                item = buffer;
-            }
-            
             values[counter++] = item;
         } while (end != -1);
 

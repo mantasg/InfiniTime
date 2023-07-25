@@ -29,9 +29,8 @@ namespace Pinetime {
     
             lv_task_t* taskRefresh;
             
-            uint8_t maxItems = 45;
-            uint8_t maxItemLength = 20;
-            uint8_t itemsPerPage = 9;
+            uint8_t maxItems = 48;
+            uint8_t itemsPerPage = 8;
             uint8_t pageCount = 0;
             uint8_t currentPage = 0;
             uint8_t itemCount = 0;
