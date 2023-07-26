@@ -176,7 +176,7 @@ void WatchFaceDigital::Refresh() {
       lv_obj_set_style_local_bg_color(on_call_primary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFFFF));
     }
     else {
-      lv_obj_set_style_local_bg_color(on_call_secondary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x505050));
+      lv_obj_set_style_local_bg_color(on_call_primary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x505050));
     }
     
     lv_label_set_text_fmt(on_call_secondary_text, "%s", on_call_sec.c_str());

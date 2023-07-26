@@ -360,8 +360,9 @@ void DisplayApp::Refresh() {
         break;
       case Messages::GoToWatchface:
         if (currentApp != Apps::Clock) {
-          returnAppStack.Pop();  
           LoadNewScreen(Apps::Clock, DisplayApp::FullRefreshDirections::None);
+          appStackDirections.Reset();
+          returnAppStack.Reset();
         }
         break;
       case Messages::OpenNagios:
