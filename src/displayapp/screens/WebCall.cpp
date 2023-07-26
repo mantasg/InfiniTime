@@ -15,7 +15,7 @@ WebCall::WebCall(Pinetime::Controllers::WebCallService& webCallService, System::
     lv_label_set_long_mode(content_label, LV_LABEL_LONG_BREAK);
     lv_obj_set_width(content_label, 240);
     lv_label_set_text_static(content_label, "");
-    lv_obj_align(content_label, nullptr, LV_ALIGN_IN_TOP_MID, 0, 0);
+    lv_obj_align(content_label, nullptr, LV_ALIGN_IN_LEFT_MID, 0, -20);
     
     page_label = lv_label_create(lv_scr_act(), nullptr);
     lv_obj_set_width(page_label, 240);
@@ -32,6 +32,7 @@ WebCall::~WebCall() {
 }
 
 void WebCall::MakeWebCall() {
+    lv_obj_set_style_local_text_color(content_label, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFFFF));
     lv_label_set_text_static(content_label, "Requesting data ...");
     int const result = webCallService.MakeWebCall("nagios_list");
     if (result > 0) {
