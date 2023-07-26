@@ -99,7 +99,7 @@ WatchFaceDigital::WatchFaceDigital(Controllers::DateTime& dateTimeController,
   on_call_primary_btn = lv_btn_create(lv_scr_act(), nullptr);
   lv_obj_set_width(on_call_primary_btn, 118);
   lv_obj_align(on_call_primary_btn, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 175);
-  lv_obj_set_style_local_bg_color(on_call_primary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFFFF));
+  lv_obj_set_style_local_bg_color(on_call_primary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x505050));
   on_call_primary_btn->user_data = this;
   lv_obj_set_event_cb(on_call_primary_btn, btnHandler);
   
