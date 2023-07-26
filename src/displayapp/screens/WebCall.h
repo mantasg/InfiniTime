@@ -27,12 +27,12 @@ namespace Pinetime {
             lv_obj_t* content_label;
             lv_obj_t* page_label;
             
-            uint8_t maxItems = 48;
-            uint8_t itemsPerPage = 8;
+            uint8_t maxItems = 50;
+            uint8_t itemsPerPage = 1;
             uint8_t pageCount = 0;
             uint8_t currentPage = 0;
             uint8_t itemCount = 0;
-            std::string values[45] {};
+            std::string values[50] {};
             
             void DrawItems();
             void MakeWebCall();

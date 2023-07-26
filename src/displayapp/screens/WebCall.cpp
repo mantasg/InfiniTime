@@ -50,13 +50,22 @@ void WebCall::DrawItems() {
     uint8_t end = currentPage * itemsPerPage + itemsPerPage;
     if (end > itemCount) end = itemCount;
 
-    const std::basic_string<char> &basicString = std::accumulate(
+    const std::basic_string<char> &stringToDisplay = std::accumulate(
             std::begin(values) + begin,
             std::begin(values) + end,
             std::string(),
             [](std::string &acc, std::string &str) { return acc.empty() ? str : acc + "\n" + str; });
 
-    lv_label_set_text_fmt(content_label, "%s", basicString.c_str());
+    lv_label_set_text_fmt(content_label, "%s", stringToDisplay.c_str());
+
+    if (stringToDisplay.find("[WARN]") != std::string::npos) {
+      lv_obj_set_style_local_text_color(content_label, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFF00));
+    }
+
+    if (stringToDisplay.find("[CRIT]") != std::string::npos) {
+      lv_obj_set_style_local_text_color(content_label, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFF0000));
+    }
+    
     lv_label_set_text_fmt(page_label, "%d/%d", currentPage + 1, pageCount);
 }
 
