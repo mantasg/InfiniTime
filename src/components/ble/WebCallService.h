@@ -2,12 +2,15 @@
 
 #include <cstdint>
 #include <string>
+#include <set>
 
 #define min // workaround: nimble's min/max macros conflict with libstdc++
 #define max
 #include <host/ble_gap.h>
 #undef max
 #undef min
+
+#include "displayapp/screens/Screen.h"
 
 namespace Pinetime {
   namespace System {
@@ -23,16 +26,13 @@ namespace Pinetime {
       void Init();
       int MakeWebCall(std::string label);
       int Callback(struct ble_gatt_access_ctxt* ctxt);
-      std::string getResponse() const;
-      bool getResponseReceived() const;
-      void reset();
+      void Subscribe(Applications::Screens::Screen* screen);
+      void Unsubscribe(Applications::Screens::Screen* screen);
       
     private:
       Pinetime::Controllers::NimbleController& nimble;
       uint16_t eventHandle {};
-      
-      bool responseReceived = false;
-      std::string response {"NA"};
+      std::set<Applications::Screens::Screen*> subscribers {};
       
       struct ble_gatt_chr_def characteristicDefinition[3];
       struct ble_gatt_svc_def serviceDefinition[2];

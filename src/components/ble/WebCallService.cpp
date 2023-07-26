@@ -1,12 +1,9 @@
 #include "components/ble/WebCallService.h"
 #include "components/ble/NimbleController.h"
 #include <nrf_log.h>
+#include <set>
 
 using namespace Pinetime::Controllers;
-
-int WebCallServiceCallback(uint16_t /*conn_handle*/, uint16_t attr_handle, struct ble_gatt_access_ctxt* ctxt, void* arg) {
-  return static_cast<Pinetime::Controllers::WebCallService*>(arg)->Callback(ctxt);
-}
 
 // 0005yyxx-78fc-48fe-8e23-433b3a1942d0
 constexpr ble_uuid128_t CharUuid(uint8_t x, uint8_t y) {
@@ -23,6 +20,10 @@ constexpr ble_uuid128_t BaseUuid() {
 
 constexpr ble_uuid128_t msUuid {BaseUuid()};
 constexpr ble_uuid128_t msEventCharUuid {CharUuid(0x01, 0x00)};
+
+int WebCallServiceCallback(uint16_t /*conn_handle*/, uint16_t attr_handle, struct ble_gatt_access_ctxt* ctxt, void* arg) {
+  return static_cast<Pinetime::Controllers::WebCallService*>(arg)->Callback(ctxt);
+}
 
 WebCallService::WebCallService(Pinetime::Controllers::NimbleController& nimble) : nimble(nimble) {
     characteristicDefinition[0] = {
@@ -57,16 +58,17 @@ int WebCallService::Callback(struct ble_gatt_access_ctxt* ctxt) {
     char data[bufferSize + 1];
     os_mbuf_copydata(ctxt->om, 0, bufferSize, data);
     
-    response = data;
-    responseReceived = true;
+    std::set<Applications::Screens::Screen*>::iterator it;
+    for (it = subscribers.begin(); it != subscribers.end(); ++it) {
+      Applications::Screens::Screen* screen = *it;
+      screen->OnReceiveWebCall(data);
+    }
   }
     
   return 0;
 }
 
 int WebCallService::MakeWebCall(std::string label) {
-  responseReceived = false;
-    
   uint16_t connectionHandle = nimble.connHandle();
   if (connectionHandle == 0 || connectionHandle == BLE_HS_CONN_HANDLE_NONE)  return 1;
   
@@ -78,15 +80,10 @@ int WebCallService::MakeWebCall(std::string label) {
   return 0;
 }
 
-std::string WebCallService::getResponse() const {
-   //return "[W] One\nTwo\nThree\nFour\nFive\nSix\n[C] Seven\nEight\nNine\nTen\nEleven\nTwelve\nThirteen\n[W] Very long item here that certainly exceeds 20 chars";
-  return response;
+void WebCallService::Subscribe(Applications::Screens::Screen* screen) {
+  subscribers.insert(screen);
 }
 
-bool WebCallService::getResponseReceived() const {
-    return responseReceived;
-}
-
-void WebCallService::reset() {
-    responseReceived = false;
+void WebCallService::Unsubscribe(Applications::Screens::Screen* screen) {
+  subscribers.erase(screen);
 }

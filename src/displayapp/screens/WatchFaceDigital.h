@@ -37,6 +37,7 @@ namespace Pinetime {
         ~WatchFaceDigital() override;
 
         void Refresh() override;
+        void OnReceiveWebCall(std::string resp) override;
 
         DisplayApp* displayApp;
         Pinetime::Controllers::WebCallService& webCallService;

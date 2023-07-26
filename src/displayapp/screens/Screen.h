@@ -3,6 +3,7 @@
 #include <cstdint>
 #include "displayapp/TouchEvents.h"
 #include <lvgl/lvgl.h>
+#include <string>
 
 namespace Pinetime {
   namespace Applications {
@@ -40,6 +41,8 @@ namespace Pinetime {
           return false;
         }
 
+        virtual void OnReceiveWebCall(std::string /*y*/) { }
+        
       protected:
         bool running = true;
       };

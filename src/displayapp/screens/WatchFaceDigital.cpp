@@ -123,73 +123,71 @@ WatchFaceDigital::WatchFaceDigital(Controllers::DateTime& dateTimeController,
   taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
   Refresh();
   
+  webCallService.Subscribe(this);
   webCallService.MakeWebCall("nagios_status");
 }
 
 WatchFaceDigital::~WatchFaceDigital() {
+  webCallService.Unsubscribe(this);
   lv_task_del(taskRefresh);
   lv_obj_clean(lv_scr_act());
+}
+
+void WatchFaceDigital::OnReceiveWebCall(std::string response)  {
+  std::string ok = "???";
+  std::string warn = "???";
+  std::string crit = "???";
+  std::string on_call_prim = "???";
+  std::string on_call_sec = "???";
+
+  int counter = 0;
+  const std::string del = "\n";
+  int start = 0;
+  int end = -1 * del.size();
+  do {
+    start = end + del.size();
+    end = response.find(del, start);
+    std::string item = response.substr(start, end - start);
+
+    if (counter == 0) ok = item;
+    else if (counter == 1) warn = item;
+    else if (counter == 2) crit = item;
+    else if (counter == 3) on_call_prim = item;
+    else if (counter == 4) on_call_sec = item;
+    counter++;
+  } while (end != -1);
+
+  lv_label_set_text_fmt(label_nagios_status_text, "O:%s W:%s C:%s", ok.c_str(), warn.c_str(), crit.c_str());
+  if (crit != "0") {
+    lv_obj_set_style_local_bg_color(nagios_status_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFF0000));
+  }
+  else if (warn != "0") {
+    lv_obj_set_style_local_bg_color(nagios_status_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFF00));
+  }
+  else {
+    lv_obj_set_style_local_bg_color(nagios_status_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x00FF00));
+  }
+
+  lv_label_set_text_fmt(on_call_primary_text, "%s", on_call_prim.c_str());
+  if (on_call_prim.find("MG") != std::string::npos) {
+    lv_obj_set_style_local_bg_color(on_call_primary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFFFF));
+  }
+  else {
+    lv_obj_set_style_local_bg_color(on_call_primary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x505050));
+  }
+
+  lv_label_set_text_fmt(on_call_secondary_text, "%s", on_call_sec.c_str());
+  if (on_call_sec.find("MG") != std::string::npos) {
+    lv_obj_set_style_local_bg_color(on_call_secondary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFFFF));
+  }
+  else {
+    lv_obj_set_style_local_bg_color(on_call_secondary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x505050));
+  }
 }
 
 void WatchFaceDigital::Refresh() {
   statusIcons.Update();
   
-  if (webCallService.getResponseReceived()) {
-    std::string response = webCallService.getResponse();
-    
-    std::string ok = "???"; 
-    std::string warn = "???"; 
-    std::string crit = "???"; 
-    std::string on_call_prim = "???"; 
-    std::string on_call_sec = "???"; 
-    
-    int counter = 0;
-    const std::string del = "\n";
-    int start = 0;
-    int end = -1 * del.size();
-    do {
-      start = end + del.size();
-      end = response.find(del, start);
-      std::string item = response.substr(start, end - start);
-      
-      if (counter == 0) ok = item;
-      else if (counter == 1) warn = item;
-      else if (counter == 2) crit = item;
-      else if (counter == 3) on_call_prim = item;
-      else if (counter == 4) on_call_sec = item;
-      counter++;
-    } while (end != -1);
-
-    lv_label_set_text_fmt(label_nagios_status_text, "O:%s W:%s C:%s", ok.c_str(), warn.c_str(), crit.c_str());
-    if (crit != "0") {
-      lv_obj_set_style_local_bg_color(nagios_status_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFF0000));
-    }
-    else if (warn != "0") {
-      lv_obj_set_style_local_bg_color(nagios_status_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFF00));
-    }
-    else {
-      lv_obj_set_style_local_bg_color(nagios_status_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x00FF00));
-    }
-    
-    lv_label_set_text_fmt(on_call_primary_text, "%s", on_call_prim.c_str());
-    if (on_call_prim.find("MG") != std::string::npos) {
-      lv_obj_set_style_local_bg_color(on_call_primary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFFFF));
-    }
-    else {
-      lv_obj_set_style_local_bg_color(on_call_primary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x505050));
-    }
-    
-    lv_label_set_text_fmt(on_call_secondary_text, "%s", on_call_sec.c_str());
-    if (on_call_sec.find("MG") != std::string::npos) {
-      lv_obj_set_style_local_bg_color(on_call_secondary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFFFF));
-    }
-    else {
-      lv_obj_set_style_local_bg_color(on_call_secondary_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x505050));
-    }
-    
-    webCallService.reset();
-  }
-
   notificationState = notificationManager.AreNewNotificationsAvailable();
   if (notificationState.IsUpdated()) {
     lv_label_set_text_static(notificationIcon, NotificationIcon::GetIcon(notificationState.Get()));

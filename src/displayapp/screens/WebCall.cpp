@@ -7,20 +7,9 @@
 
 using namespace Pinetime::Applications::Screens;
 
-namespace {
-  void btnStartStopEventHandler(lv_obj_t* obj, lv_event_t event) {
-    auto* screen = static_cast<WebCall*>(obj->user_data);
-    screen->OnButtonEvent(obj, event);
-  }
-}
-
 WebCall::WebCall(Pinetime::Controllers::WebCallService& webCallService, System::SystemTask& systemTask) 
 : webCallService {webCallService}, 
   systemTask{systemTask}  {
-    lv_obj_t* act = lv_scr_act();
-    act->user_data = this;
-    lv_obj_set_event_cb(act, btnStartStopEventHandler);
-    
     content_label = lv_label_create(lv_scr_act(), nullptr);
     lv_label_set_recolor(content_label, true);
     lv_label_set_long_mode(content_label, LV_LABEL_LONG_BREAK);
@@ -32,17 +21,15 @@ WebCall::WebCall(Pinetime::Controllers::WebCallService& webCallService, System::
     lv_obj_set_width(page_label, 240);
     lv_label_set_text_static(page_label, "   ");
     lv_obj_align(page_label, nullptr, LV_ALIGN_IN_BOTTOM_MID, 0, 0);
-      
-    taskRefresh = lv_task_create(RefreshTaskCallback, 1000, LV_TASK_PRIO_MID, this);
+    
+    webCallService.Subscribe(this);
     MakeWebCall();
 }
 
 WebCall::~WebCall() {
-  lv_task_del(taskRefresh);
+  webCallService.Unsubscribe(this);
   lv_obj_clean(lv_scr_act());
 }
-
-void WebCall::OnButtonEvent(lv_obj_t* obj, lv_event_t event) {}
 
 void WebCall::MakeWebCall() {
     lv_label_set_text_static(content_label, "Requesting data ...");
@@ -73,31 +60,7 @@ void WebCall::DrawItems() {
     lv_label_set_text_fmt(page_label, "%d/%d", currentPage + 1, pageCount);
 }
 
-void WebCall::Refresh() {
-    if (webCallService.getResponseReceived()) {
-        const std::string response = webCallService.getResponse();
-        webCallService.reset();
-
-        int counter = 0;
-        const std::string del = "\n";
-        int start = 0;
-        int end = -1 * del.size();
-        do {
-            if (counter == maxItems) break;
-            
-            start = end + del.size();
-            end = response.find(del, start);
-            std::string item = response.substr(start, end - start);
-            values[counter++] = item;
-        } while (end != -1);
-
-        currentPage = 0;
-        itemCount = counter;
-        pageCount = itemCount == 0 ? 0 : ceil((float) itemCount / (float) itemsPerPage); 
-        
-        DrawItems();
-    }
-}
+void WebCall::Refresh() { }
 
 bool WebCall::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
     if (event == TouchEvents::SwipeLeft) {
@@ -120,4 +83,25 @@ bool WebCall::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
     }
     
     return true;
+}
+
+void WebCall::OnReceiveWebCall(std::string response) {
+  int counter = 0;
+  const std::string del = "\n";
+  int start = 0;
+  int end = -1 * del.size();
+  do {
+    if (counter == maxItems) break;
+
+    start = end + del.size();
+    end = response.find(del, start);
+    std::string item = response.substr(start, end - start);
+    values[counter++] = item;
+  } while (end != -1);
+
+  currentPage = 0;
+  itemCount = counter;
+  pageCount = itemCount == 0 ? 0 : ceil((float) itemCount / (float) itemsPerPage);
+
+  DrawItems();
 }
