@@ -159,13 +159,13 @@ void WatchFaceDigital::OnReceiveWebCall(std::string response)  {
 
   lv_label_set_text_fmt(label_nagios_status_text, "O:%s W:%s C:%s", ok.c_str(), warn.c_str(), crit.c_str());
   if (crit != "0") {
-    lv_obj_set_style_local_bg_color(nagios_status_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x009933));
+    lv_obj_set_style_local_bg_color(nagios_status_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xcc0000));
   }
   else if (warn != "0") {
     lv_obj_set_style_local_bg_color(nagios_status_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xff9900));
   }
   else {
-    lv_obj_set_style_local_bg_color(nagios_status_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xcc0000));
+    lv_obj_set_style_local_bg_color(nagios_status_btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x009933));
   }
 
   lv_label_set_text_fmt(on_call_primary_text, "%s", on_call_prim.c_str());
