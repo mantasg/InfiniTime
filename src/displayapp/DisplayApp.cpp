@@ -1,6 +1,7 @@
 #include "displayapp/DisplayApp.h"
 #include <libraries/log/nrf_log.h>
 #include "displayapp/screens/HeartRate.h"
+#include "displayapp/screens/Motion.h"
 #include "displayapp/screens/Timer.h"
 #include "displayapp/screens/Alarm.h"
 #include "components/battery/BatteryController.h"
@@ -247,7 +248,9 @@ void DisplayApp::Refresh() {
         } else {
           LoadNewScreen(Apps::Timer, DisplayApp::FullRefreshDirections::Up);
         }
-        motorController.RunForDuration(35);
+        motorController.RunForDuration(100);
+        motorController.RunForDuration(100);
+        motorController.RunForDuration(100);
         break;
       case Messages::AlarmTriggered:
         if (currentApp == Apps::Alarm) {
@@ -409,6 +412,9 @@ void DisplayApp::LoadScreen(Apps app, DisplayApp::FullRefreshDirections directio
     case Apps::Launcher:
       currentScreen =
         std::make_unique<Screens::ApplicationList>(this, settingsController, batteryController, bleController, dateTimeController);
+      break;
+    case Apps::Motion:
+      currentScreen = std::make_unique<Screens::Motion>(motionController);
       break;
     case Apps::None:
     case Apps::Clock:
