@@ -48,6 +48,7 @@ namespace Pinetime {
           {Symbols::heartBeat, Apps::HeartRate},
           {Symbols::music, Apps::Music},
           {"M", Apps::Motion},
+          {"S", Apps::SleepTracking},
 
           //{Symbols::paintbrush, Apps::Paint},
           //{Symbols::paddle, Apps::Paddle},

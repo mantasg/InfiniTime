@@ -16,6 +16,7 @@ namespace Pinetime {
       FlashLight,
       BatteryInfo,
       WebCall,
+      SleepTracking,
       Music,
       HeartRate,
       StopWatch,

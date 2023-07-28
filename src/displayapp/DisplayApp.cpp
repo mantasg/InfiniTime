@@ -44,6 +44,7 @@
 #include "displayapp/screens/settings/SettingBluetooth.h"
 
 #include "libs/lv_conf.h"
+#include "displayapp/screens/SleepTracking.h"
 
 using namespace Pinetime::Applications;
 using namespace Pinetime::Applications::Display;
@@ -529,6 +530,9 @@ void DisplayApp::LoadScreen(Apps app, DisplayApp::FullRefreshDirections directio
       break;
     case Apps::WebCall:
       currentScreen = std::make_unique<Screens::WebCall>(systemTask->nimble().webCall(), *systemTask);
+      break;
+    case Apps::SleepTracking:
+      currentScreen = std::make_unique<Screens::SleepTracking>();
       break;
     case Apps::Music:
       currentScreen = std::make_unique<Screens::Music>(systemTask->nimble().music());
