@@ -454,6 +454,7 @@ list(APPEND SOURCE_FILES
         components/ble/MusicService.cpp
         components/ble/BatteryInformationService.cpp
         components/ble/WebCallService.cpp
+        components/ble/SleepTrackingService.cpp
         components/ble/FSService.cpp
         components/ble/ImmediateAlertService.cpp
         components/ble/ServiceDiscovery.cpp
@@ -520,6 +521,7 @@ list(APPEND RECOVERY_SOURCE_FILES
         components/ble/MusicService.cpp
         components/ble/BatteryInformationService.cpp
         components/ble/WebCallService.cpp
+        components/ble/SleepTrackingService.cpp
         components/ble/FSService.cpp
         components/ble/ImmediateAlertService.cpp
         components/ble/ServiceDiscovery.cpp
@@ -636,6 +638,7 @@ set(INCLUDE_FILES
         components/firmwarevalidator/FirmwareValidator.h
         components/ble/BatteryInformationService.h
         components/ble/WebCallService.h
+        components/ble/SleepTrackingService.h
         components/ble/FSService.h
         components/ble/ImmediateAlertService.h
         components/ble/ServiceDiscovery.h

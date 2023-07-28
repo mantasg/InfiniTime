@@ -4,7 +4,8 @@
 
 using namespace Pinetime::Applications::Screens;
 
-SleepTracking::SleepTracking() {
+SleepTracking::SleepTracking(Pinetime::Controllers::SleepTrackingService& sleepTrackingService)
+  : sleepTrackingService{sleepTrackingService} {
   lv_obj_t* content_label = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_recolor(content_label, true);
   lv_label_set_long_mode(content_label, LV_LABEL_LONG_BREAK);

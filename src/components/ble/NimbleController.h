@@ -22,6 +22,7 @@
 #include "components/ble/ServiceDiscovery.h"
 #include "components/ble/MotionService.h"
 #include "components/fs/FS.h"
+#include "components/ble/SleepTrackingService.h"
 
 namespace Pinetime {
   namespace Drivers {
@@ -60,6 +61,10 @@ namespace Pinetime {
 
       Pinetime::Controllers::WebCallService& webCall() {
         return webCallService;
+      };
+
+      Pinetime::Controllers::SleepTrackingService& sleepTracking() {
+        return sleepTrackingService;
       };
       
       Pinetime::Controllers::AlertNotificationService& alertService() {
@@ -100,6 +105,7 @@ namespace Pinetime {
       HeartRateService heartRateService;
       MotionService motionService;
       FSService fsService;
+      SleepTrackingService sleepTrackingService;
       ServiceDiscovery serviceDiscovery;
 
       uint8_t addrType;

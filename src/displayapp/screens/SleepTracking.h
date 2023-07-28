@@ -14,10 +14,10 @@ namespace Pinetime {
     namespace Applications::Screens {
         class SleepTracking : public Screen {
         public:
-            SleepTracking();
+            SleepTracking(Pinetime::Controllers::SleepTrackingService& sleepTrackingService);
             ~SleepTracking() override;
         private:
-            //Pinetime::Controllers::SleepTrackingService& sleepTrackingService;
+            Pinetime::Controllers::SleepTrackingService& sleepTrackingService;
             bool todo;
         };
     }
