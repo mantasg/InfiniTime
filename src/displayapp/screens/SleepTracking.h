@@ -14,11 +14,16 @@ namespace Pinetime {
     namespace Applications::Screens {
         class SleepTracking : public Screen {
         public:
-            SleepTracking(Pinetime::Controllers::SleepTrackingService& sleepTrackingService);
+            SleepTracking(Pinetime::Controllers::SleepTrackingService& sleepTrackingService, 
+                          DisplayApp* displayApp);
             ~SleepTracking() override;
+            void Refresh() override;
         private:
             Pinetime::Controllers::SleepTrackingService& sleepTrackingService;
-            bool todo;
+            DisplayApp* displayApp;
+
+            lv_obj_t* content_label;
+            lv_task_t* taskRefresh;
         };
     }
 }

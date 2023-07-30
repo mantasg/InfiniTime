@@ -94,6 +94,7 @@ void NimbleController::Init() {
   dfuService.Init();
   batteryInformationService.Init();
   webCallService.Init();
+  sleepTrackingService.Init();
   immediateAlertService.Init();
   heartRateService.Init();
   motionService.Init();

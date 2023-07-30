@@ -532,7 +532,7 @@ void DisplayApp::LoadScreen(Apps app, DisplayApp::FullRefreshDirections directio
       currentScreen = std::make_unique<Screens::WebCall>(systemTask->nimble().webCall(), *systemTask);
       break;
     case Apps::SleepTracking:
-      currentScreen = std::make_unique<Screens::SleepTracking>(systemTask->nimble().sleepTracking());
+      currentScreen = std::make_unique<Screens::SleepTracking>(systemTask->nimble().sleepTracking(), this);
       break;
     case Apps::Music:
       currentScreen = std::make_unique<Screens::Music>(systemTask->nimble().music());
