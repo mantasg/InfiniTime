@@ -82,25 +82,25 @@ void SleepTrackingService::Update() {
   e_timestamps[curr] = std::chrono::duration_cast<std::chrono::seconds>(dateTimeController.UTCDateTime().time_since_epoch()).count();
   
   p = 0.0
-      + es[(curr_centre - 9) % max] * exp(-0.25)
-      + es[(curr_centre - 8) % max] * exp(-0.5)
-      + es[(curr_centre - 7) % max] * exp(-1.0)
-      + es[(curr_centre - 6) % max] * exp(-0.25)
-      + es[(curr_centre - 5) % max] * exp(-0.5)
-      + es[(curr_centre - 4) % max] * exp(-1.0)
-      + es[(curr_centre - 3) % max] * exp(-0.25)
-      + es[(curr_centre - 2) % max] * exp(-0.5)
-      + es[(curr_centre - 1) % max] * exp(-1.0)
-      + es[(curr_centre + 0) % max] * exp(0.0)
-      + es[(curr_centre + 1) % max] * exp(-1.0)
-      + es[(curr_centre + 2) % max] * exp(-0.5)
-      + es[(curr_centre + 3) % max] * exp(-0.25)
-      + es[(curr_centre + 4) % max] * exp(-1.0)
-      + es[(curr_centre + 5) % max] * exp(-0.5)
-      + es[(curr_centre + 6) % max] * exp(-0.25)
-      + es[(curr_centre + 7) % max] * exp(-1.0)
-      + es[(curr_centre + 8) % max] * exp(-0.5)
-      + es[(curr_centre + 9) % max] * exp(-0.25);
+      + es[(curr_centre + max - 9) % max] * exp(-0.25)
+      + es[(curr_centre + max - 8) % max] * exp(-0.5)
+      + es[(curr_centre + max - 7) % max] * exp(-1.0)
+      + es[(curr_centre + max - 6) % max] * exp(-0.25)
+      + es[(curr_centre + max - 5) % max] * exp(-0.5)
+      + es[(curr_centre + max - 4) % max] * exp(-1.0)
+      + es[(curr_centre + max - 3) % max] * exp(-0.25)
+      + es[(curr_centre + max - 2) % max] * exp(-0.5)
+      + es[(curr_centre + max - 1) % max] * exp(-1.0)
+      + es[(curr_centre       + 0) % max] * exp(0.0)
+      + es[(curr_centre       + 1) % max] * exp(-1.0)
+      + es[(curr_centre       + 2) % max] * exp(-0.5)
+      + es[(curr_centre       + 3) % max] * exp(-0.25)
+      + es[(curr_centre       + 4) % max] * exp(-1.0)
+      + es[(curr_centre       + 5) % max] * exp(-0.5)
+      + es[(curr_centre       + 6) % max] * exp(-0.25)
+      + es[(curr_centre       + 7) % max] * exp(-1.0)
+      + es[(curr_centre       + 8) % max] * exp(-0.5)
+      + es[(curr_centre       + 9) % max] * exp(-0.25);
   
   uint32_t p_value = p;
   uint32_t e_value = es[curr_centre];
