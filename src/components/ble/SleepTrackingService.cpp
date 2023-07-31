@@ -106,6 +106,12 @@ void SleepTrackingService::Update() {
   uint32_t e_value = es[curr_centre];
   uint64_t timestamp = e_timestamps[curr_centre];
   
+  if (pending_items.size() > 1000) {
+    pending_items.pop();
+  }
+  PendingItem item = { timestamp, p_value, e_value };
+  pending_items.push(item);
+  
   curr = (curr + 1) % max;
   curr_centre = (curr_centre + 1) % max;
   e_count = 0;
@@ -114,26 +120,31 @@ void SleepTrackingService::Update() {
   uint16_t connectionHandle = nimble.connHandle();
   if (connectionHandle == 0 || connectionHandle == BLE_HS_CONN_HANDLE_NONE)  return;
   
-  unsigned char bytes[16];
-  bytes[0] = p_value & 0xFF;
-  bytes[1] = (p_value >> 8) & 0xFF;
-  bytes[2] = (p_value >> 16) & 0xFF;
-  bytes[3] = (p_value >> 24) & 0xFF;
+  while (!pending_items.empty()) {
+    PendingItem item = pending_items.front();
+    unsigned char bytes[16];
+    bytes[0] = item.p & 0xFF;
+    bytes[1] = (item.p >> 8) & 0xFF;
+    bytes[2] = (item.p >> 16) & 0xFF;
+    bytes[3] = (item.p >> 24) & 0xFF;
   
-  bytes[4] = timestamp & 0xFF;
-  bytes[5] = (timestamp >> 8) & 0xFF;
-  bytes[6] = (timestamp >> 16) & 0xFF;
-  bytes[7] = (timestamp >> 24) & 0xFF;
-  bytes[8] = (timestamp >> 32) & 0xFF;
-  bytes[9] = (timestamp >> 40) & 0xFF;
-  bytes[10] = (timestamp >> 48) & 0xFF;
-  bytes[11] = (timestamp >> 56) & 0xFF;
+    bytes[4] = item.timestamp & 0xFF;
+    bytes[5] = (item.timestamp >> 8) & 0xFF;
+    bytes[6] = (item.timestamp >> 16) & 0xFF;
+    bytes[7] = (item.timestamp >> 24) & 0xFF;
+    bytes[8] = (item.timestamp >> 32) & 0xFF;
+    bytes[9] = (item.timestamp >> 40) & 0xFF;
+    bytes[10] = (item.timestamp >> 48) & 0xFF;
+    bytes[11] = (item.timestamp >> 56) & 0xFF;
   
-  bytes[12] = e_value & 0xFF;
-  bytes[13] = (e_value >> 8) & 0xFF;
-  bytes[14] = (e_value >> 16) & 0xFF;
-  bytes[15] = (e_value >> 24) & 0xFF;
-  
-  auto* om = ble_hs_mbuf_from_flat(&bytes, 16);
-  ble_gattc_notify_custom(connectionHandle, eventHandle, om);
+    bytes[12] = item.e & 0xFF;
+    bytes[13] = (item.e >> 8) & 0xFF;
+    bytes[14] = (item.e >> 16) & 0xFF;
+    bytes[15] = (item.e >> 24) & 0xFF;
+    
+    auto* om = ble_hs_mbuf_from_flat(&bytes, 16);
+    int res = ble_gattc_notify_custom(connectionHandle, eventHandle, om);
+    if (res != 0) break; // Failed to send. Will attempt to send all pending_items next iteration.
+    pending_items.pop();
+  }
 }

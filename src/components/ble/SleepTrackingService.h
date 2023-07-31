@@ -8,12 +8,19 @@
 
 #include <FreeRTOS.h>
 #include <timers.h>
+#include <queue>
 
 namespace Pinetime {
     namespace Controllers {
         class NimbleController;
         class DateTime;
         class MotionController;
+        
+        struct PendingItem {
+          uint64_t timestamp;
+          uint32_t p;
+          uint32_t e;
+        };
         
         class SleepTrackingService {
         public:
@@ -35,6 +42,8 @@ namespace Pinetime {
             float p;
             int e_count = 0;
 
+            std::queue<PendingItem> pending_items {};
+            
             int max = 19;
             float es[19] {};
             int64_t e_timestamps[19] {};
