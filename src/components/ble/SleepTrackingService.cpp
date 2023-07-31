@@ -30,8 +30,10 @@ int SleepTrackingServiceCallback(uint16_t /*conn_handle*/, uint16_t attr_handle,
 }
 
 SleepTrackingService::SleepTrackingService(Pinetime::Controllers::NimbleController& nimble,
+                                           Pinetime::Controllers::DateTime& dateTimeController,
                                            Pinetime::Controllers::MotionController& motionController)
   : nimble{nimble},
+    dateTimeController{dateTimeController},
     motionController{motionController} {
 
   characteristicDefinition[0] = {
@@ -77,9 +79,8 @@ void SleepTrackingService::Update() {
   if (e_count < 30) return;
 
   es[curr] = e;
-  curr = (curr + 1) % max;
-  curr_centre = (curr_centre + 1) % max;
-
+  e_timestamps[curr] = std::chrono::duration_cast<std::chrono::seconds>(dateTimeController.UTCDateTime().time_since_epoch()).count();
+  
   p = 0.0
       + es[(curr_centre - 9) % max] * exp(-0.25)
       + es[(curr_centre - 8) % max] * exp(-0.5)
@@ -100,14 +101,39 @@ void SleepTrackingService::Update() {
       + es[(curr_centre + 7) % max] * exp(-1.0)
       + es[(curr_centre + 8) % max] * exp(-0.5)
       + es[(curr_centre + 9) % max] * exp(-0.25);
-
+  
+  uint32_t p_value = p;
+  uint32_t e_value = es[curr_centre];
+  uint64_t timestamp = e_timestamps[curr_centre];
+  
+  curr = (curr + 1) % max;
+  curr_centre = (curr_centre + 1) % max;
   e_count = 0;
   e = 0;
 
   uint16_t connectionHandle = nimble.connHandle();
   if (connectionHandle == 0 || connectionHandle == BLE_HS_CONN_HANDLE_NONE)  return;
-
-  uint32_t buffer = p;
-  auto* om = ble_hs_mbuf_from_flat(&buffer, 4);
+  
+  unsigned char bytes[16];
+  bytes[0] = p_value & 0xFF;
+  bytes[1] = (p_value >> 8) & 0xFF;
+  bytes[2] = (p_value >> 16) & 0xFF;
+  bytes[3] = (p_value >> 24) & 0xFF;
+  
+  bytes[4] = timestamp & 0xFF;
+  bytes[5] = (timestamp >> 8) & 0xFF;
+  bytes[6] = (timestamp >> 16) & 0xFF;
+  bytes[7] = (timestamp >> 24) & 0xFF;
+  bytes[8] = (timestamp >> 32) & 0xFF;
+  bytes[9] = (timestamp >> 40) & 0xFF;
+  bytes[10] = (timestamp >> 48) & 0xFF;
+  bytes[11] = (timestamp >> 56) & 0xFF;
+  
+  bytes[12] = e_value & 0xFF;
+  bytes[13] = (e_value >> 8) & 0xFF;
+  bytes[14] = (e_value >> 16) & 0xFF;
+  bytes[15] = (e_value >> 24) & 0xFF;
+  
+  auto* om = ble_hs_mbuf_from_flat(&bytes, 16);
   ble_gattc_notify_custom(connectionHandle, eventHandle, om);
 }

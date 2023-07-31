@@ -12,11 +12,13 @@
 namespace Pinetime {
     namespace Controllers {
         class NimbleController;
+        class DateTime;
         class MotionController;
         
         class SleepTrackingService {
         public:
             SleepTrackingService(Pinetime::Controllers::NimbleController& nimble,
+                                 Pinetime::Controllers::DateTime& dateTimeController,
                                  Pinetime::Controllers::MotionController& motionController);
             void Init();
             void Update();
@@ -35,10 +37,12 @@ namespace Pinetime {
 
             int max = 19;
             float es[19] {};
+            int64_t e_timestamps[19] {};
             int16_t curr = 0;
             int16_t curr_centre = 9;
         private:
             Pinetime::Controllers::NimbleController& nimble;
+            Pinetime::Controllers::DateTime& dateTimeController;
             Pinetime::Controllers::MotionController& motionController;
             TimerHandle_t timer;
 
